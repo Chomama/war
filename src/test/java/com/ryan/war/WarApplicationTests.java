@@ -1,4 +1,4 @@
-package com.ryan.war.war;
+package com.ryan.war;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
