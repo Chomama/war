@@ -1,8 +1,12 @@
 package com.ryan.war.game;
 
-import com.ryan.war.game.Cards.Card;
-import com.ryan.war.game.Cards.Dealer;
+import com.ryan.war.game.cards.Card;
+import com.ryan.war.game.cards.Dealer;
+import com.ryan.war.game.player.Player;
+import com.ryan.war.game.player.PlayerRepository;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -11,23 +15,22 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Component
 public class WarGame {
     private GameState gameState = GameState.NOT_STARTED;
     private Player playerOne;
     private Player playerTwo;
 
+    @Autowired
+    private PlayerRepository playerRepository;
+
     //starts the game
-    public void startGame() {
+    public void startGame(Player playerOne, Player playerTwo) {
         //sets the game state to IN_PROGRESS
         this.gameState = GameState.IN_PROGRESS;
 
         //creates a dealer which creates a deck
         Dealer dealer = new Dealer();
-
-        //initiates the two players
-        this.playerOne = new Player("Player One");
-        this.playerTwo = new Player("Player Two");
-
         //shuffles the deck and deals them out to the two players
         dealer.shuffle();
         dealer.dealCards(playerOne, playerTwo);
@@ -39,7 +42,7 @@ public class WarGame {
         }
         Player winner = playerOne.getDeck().size() == 0 ? playerTwo : playerOne;
 
-        System.out.println(winner.getPlayerName() + " is the winner!");
+        System.out.println(winner.getPlayerId() + " is the winner!");
 
 
     }
@@ -98,7 +101,6 @@ public class WarGame {
                 playerTwo.addCards(playedCards);
                 break;
         }
-        printStatus();
         return true;
     }
 
