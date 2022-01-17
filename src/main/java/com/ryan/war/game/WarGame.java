@@ -31,38 +31,75 @@ public class WarGame {
         //shuffles the deck and deals them out to the two players
         dealer.shuffle();
         dealer.dealCards(playerOne, playerTwo);
-        printStatus();
+
+        while(playRound(playerOne, playerTwo, null)) {
+            if (playerOne.getDeck().size() == 0 || playerTwo.getDeck().size() == 0) {
+                break;
+            }
+        }
+        Player winner = playerOne.getDeck().size() == 0 ? playerTwo : playerOne;
+
+        System.out.println(winner.getPlayerName() + " is the winner!");
+
+
     }
 
-    public boolean playGame(Player playerOne, Player playerTwo, List<Card> cardsInPlay) {
-        cardsInPlay.add(playerOne.drawCard());
-        cardsInPlay.add(playerTwo.drawCard());
+    public boolean playRound(Player playerOne, Player playerTwo, List<Card> playedCards) {
+        //if first round initializes ArrayList
+        if(playedCards == null) {
+            playedCards = new ArrayList<>();
+        }
+
+        //each player draws a card from their deck
+        Card playerOnePlayedCard = playerOne.drawCard();
+        Card playerTwoPlayedCard = playerTwo.drawCard();
+
+        //if either players has run out of cards end game
+        if(playerOnePlayedCard == null || playerTwoPlayedCard == null) {
+            return false;
+        }
+        System.out.println("PLAYER ONE DRAWS: " + playerOnePlayedCard.toString());
+        System.out.println("PLAYER TWO DRAWS: " + playerTwoPlayedCard.toString());
+
+        //adds each players played cards
+        playedCards.add(playerOnePlayedCard);
+        playedCards.add(playerTwoPlayedCard);
         int result = playerOne.getCurrentCard().compareTo(playerTwo.getCurrentCard());
 
         switch (result) {
-            //tie initiate war
+            //tie -> initiate war
             case 0:
-                cardsInPlay.add(playerOne.drawCard());
-                cardsInPlay.add(playerTwo.drawCard());
-                cardsInPlay.add(playerOne.drawCard());
-                cardsInPlay.add(playerTwo.drawCard());
-                return playGame(playerOne, playerTwo, cardsInPlay);
+                System.out.println("WAR");
+                //each player draws another card facedown
+                Card playerOneFaceDown = playerOne.drawCard();
+                Card playerTwoFaceDown = playerTwo.drawCard();
+
+                if(playerOneFaceDown == null || playerTwoFaceDown == null) {
+                    return false;
+                }
+
+                playedCards.add(playerOneFaceDown);
+                playedCards.add(playerTwoFaceDown);
+
+                return playRound(playerOne, playerTwo, playedCards);
 
             //player one wins
             case 1:
-                playerOne.addCards(cardsInPlay);
-
-
+                System.out.println("PLAYER ONE WINS: " + playedCards + " CARDS.");
+                if(playedCards.size() > 2) {
+                    System.out.println("PLAYER ONE WINS: " + playedCards + " CARDS AFTER WAR.");
+                }
+                playerOne.addCards(playedCards);
+                break;
 
             //player two wins
             case -1:
-                playerTwo.addCards(cardsInPlay);
-
-
+                System.out.println("PLAYER TWO WINS: " + playedCards + " CARDS.");
+                playerTwo.addCards(playedCards);
+                break;
         }
         printStatus();
-
-
+        return true;
     }
 
 

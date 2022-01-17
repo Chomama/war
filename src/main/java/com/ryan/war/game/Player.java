@@ -24,6 +24,9 @@ public class Player {
     }
 
     public Card drawCard() {
+        if(deck.size() == 0) {
+            return null;
+        }
         currentCard = deck.remove();
         return currentCard;
     }
