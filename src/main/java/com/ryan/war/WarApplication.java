@@ -9,7 +9,6 @@ public class WarApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WarApplication.class, args);
-
 	}
 
 }

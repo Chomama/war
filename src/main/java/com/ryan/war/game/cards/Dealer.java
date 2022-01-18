@@ -1,6 +1,6 @@
 package com.ryan.war.game.cards;
 
-import com.ryan.war.game.player.Player;
+import com.ryan.war.player.Player;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
