@@ -3,7 +3,7 @@ package com.ryan.war.game;
 import com.ryan.war.game.cards.Card;
 import com.ryan.war.game.cards.Dealer;
 import com.ryan.war.player.Player;
-import com.ryan.war.player.PlayerRepository;
+import com.ryan.war.player.query.PlayerRepository;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,21 +14,13 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Component
 public class WarGame {
-    private GameState gameState = GameState.NOT_STARTED;
-    private Player playerOne;
-    private Player playerTwo;
-
     @Autowired
-    private PlayerRepository playerRepository;
+    private PlayerRepository repository;
 
     //starts the game
-    public void startGame(Player playerOne, Player playerTwo) throws Exception {
-        //sets the game state to IN_PROGRESS
-        this.gameState = GameState.IN_PROGRESS;
-
+    public Player startGame(Player playerOne, Player playerTwo) throws Exception {
         //creates a dealer which creates a deck
         Dealer dealer = new Dealer();
 
@@ -47,8 +39,8 @@ public class WarGame {
         //sets the winning player
         Player winner = playerOne.getDeck().size() == 0 ? playerTwo : playerOne;
         winner.addWin();
-        gameState = GameState.ENDED;
         System.out.println(winner.getPlayerId() + " is the winner!");
+        return winner;
     }
 
     //executes the game logic and runs recursively in case of war
@@ -104,16 +96,6 @@ public class WarGame {
                 break;
         }
         return true;
-    }
-
-
-
-    public void printStatus() {
-        System.out.println("PLAYER ONES DECK: " + playerOne.printDeck());
-        System.out.println("PLAYER TWOS DECK: " + playerTwo.printDeck());
-        System.out.println("Player one deck length" + playerOne.getDeck().size());
-        System.out.println("Player two deck length" + playerTwo.getDeck().size());
-
     }
 
 

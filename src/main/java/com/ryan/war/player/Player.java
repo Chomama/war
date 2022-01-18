@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name="Player")
 public class Player {
@@ -37,7 +36,7 @@ public class Player {
     }
 
     public void addWin() {
-        this.setWins(wins ++);
+        this.wins++;
     }
 
     public String printDeck() {
