@@ -42,6 +42,12 @@ public class PlayerRepositoryTests {
         assertThat(players).hasSize(2);
     }
 
+    @Test
+    public void getPlayerById() {
+        Player player = playerRepository.findByPlayerId("playerOne");
+        assertThat(player.getPlayerId()).isEqualTo("playerOne");
+    }
+
 
 
 }
