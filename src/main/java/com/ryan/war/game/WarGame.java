@@ -28,7 +28,8 @@ public class WarGame {
         dealer.shuffle();
         dealer.dealCards(playerOne, playerTwo);
 
-        //calls the recursive function playRound until one of the players run out of cards or the function returns false
+        //calls the recursive function playRound until one of the
+        //players run out of cards or the function returns false
         while(playRound(playerOne, playerTwo, null)) {
             if (playerOne.getDeck().size() == 0 || playerTwo.getDeck().size() == 0) {
                 break;

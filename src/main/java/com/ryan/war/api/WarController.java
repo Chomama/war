@@ -5,10 +5,9 @@ import com.ryan.war.player.Player;
 import com.ryan.war.player.query.PlayerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -22,8 +21,9 @@ public class WarController{
 
     @GetMapping(value = "/start")
     public @ResponseBody String startGame() throws Exception {
-        Player playerOne = repository.findByPlayerId("playerOne");
-        Player playerTwo = repository.findByPlayerId("playerTwo");
+        List<Player> playerList = repository.findAll();
+        Player playerOne = playerList.get(0);
+        Player playerTwo = playerList.get(1);
         Player winner = warGame.startGame(playerOne, playerTwo);
         repository.save(winner);
         return "Game has started and is running!";
