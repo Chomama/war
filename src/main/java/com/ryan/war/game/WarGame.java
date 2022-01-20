@@ -36,12 +36,8 @@ public class WarGame {
 
 
         //calls the recursive function playRound until one of the
-        //players runs out of cards, the function returns false
-        // or a maximum of 300 rounds are played.
-        int numRounds = 0;
-        while(playRound(playerOne, playerTwo, null) && numRounds < 300) {
-            numRounds++;
-
+        //players runs out of cards or the function returns false
+        while(playRound(playerOne, playerTwo, null)) {
             if (playerOne.getDeck().size() == 0 || playerTwo.getDeck().size() == 0) {
                 break;
             }
@@ -100,13 +96,13 @@ public class WarGame {
 
             //player one wins the round and gains the cards
             case 1:
-                System.out.println("PLAYER ONE WINS ROUND.");
+                System.out.println("PLAYER ONE WINS " + playedCards.size() + " CARDS");
                 playerOne.addCards(playedCards);
                 break;
 
             //player two wins the round and gains the cards
             case -1:
-                System.out.println("PLAYER TWO WINS ROUND.");
+                System.out.println("PLAYER TWO WINS "  + playedCards.size() + " CARDS");
                 playerTwo.addCards(playedCards);
                 break;
         }

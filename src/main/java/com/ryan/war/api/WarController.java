@@ -38,8 +38,8 @@ public class WarController{
         return player.getWins();
     }
 
-    @GetMapping(value = "/getAllPlayersWins")
-    public @ResponseBody Map<String, Integer> getAllPlayersWins() {
+    @GetMapping(value = "/getAllPlayerWins")
+    public @ResponseBody Map<String, Integer> getAllPlayerWins() {
         List<Player> players = repository.findAll();
         Map<String, Integer> playerWins = new HashMap<>();
         players.stream().forEach(p -> {

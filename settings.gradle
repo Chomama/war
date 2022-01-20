@@ -2,6 +2,6 @@ rootProject.name = 'war'
 gradle.ext.group = 'com.ryan.war'
 gradle.ext.version = '1.0.0-SNAPSHOT'
 
-gradle.ext.sourceCompatability = 1.14
-gradle.ext.targetCompatability = 1.14
+gradle.ext.sourceCompatability = 1.17
+gradle.ext.targetCompatability = 1.17
 gradle.ext.mainWrapper = ['name': rootProject.name, 'mainClass': 'com.ryan.war.WarApplication']
