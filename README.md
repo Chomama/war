@@ -1,49 +1,41 @@
 # WAR
 
-This project runs the card game war and is written with NodeJs, Javascript, and uses Json for persistent storage.
+This project runs the card game war and is written with Java, Spring, and connects to a MySql database deployed on AWS.
 
 
 ## API's
-The app exposes two endpoints "/start" and "/score".
 
-The "/start" endpoint utilizes the node functionility execFile() to launch a child process that runs the logic of the card game in javascript file play_war.
+# /start
+The start endpoint starts the game and will return the results.  The game is capped at 300 rounds as to prevent infinite runs.  
 
-The game simulates two players and once the game ends, writes to a json file to keep track of lifetime wins for each player. The "/score" endpoint utilizes node module fs to read from the json and return the scores.
+# /getPlayerWins
+This endpoint gets an individual player's number of wins and takes the player's id as parameter.
+eg) http://localhost:8080/getPlayerWins?playerId=playerOne
 
-## Testing
-Basic testing is done using Mocha and Chai and can be found in the tests directory.
+# /getAllPlayerWins
+This endpoint returns all of the players and their corresponding number of wins.
 
-## Docker
-To run using docker
-
-```bash
-https://github.com/Chomama/war-lw.git
-cd war-lw
-docker build -t war-docker .
-docker run -it -p 8081:8081 war-docker
-```
-App will be running on localhost:8081
-
-## Usage without Docker
 **Installation**
 
 ```bash
-https://github.com/Chomama/war-lw.git
-cd war-lw
-npm install
-```
-**Start the application in dev mode running on localhost localhost:8081/**
-
-```
-npm start
+https://github.com/Chomama/war.git
+cd war
+./gradlew build
 ```
 
-**Run tests**
-```
-npm test
+## Testing
+
+```bash
+
+./gradlew test
+
 ```
 
-**Build for production**
+
+**Start the application on localhost:8080/**
+
 ```
-npm run build
+./gradlew run
+
 ```
+
