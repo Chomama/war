@@ -34,21 +34,28 @@ public class WarGame {
         //deals the shuffled cards to the players
         dealer.dealCards(playerOne, playerTwo);
 
+
         //calls the recursive function playRound until one of the
-        //players runs out of cards or the function returns false
-        while(playRound(playerOne, playerTwo, null)) {
+        //players runs out of cards, the function returns false
+        // or a maximum of 300 rounds are played.
+        int numRounds = 0;
+        while(playRound(playerOne, playerTwo, null) && numRounds < 300) {
+            numRounds++;
+
             if (playerOne.getDeck().size() == 0 || playerTwo.getDeck().size() == 0) {
                 break;
             }
             System.out.println("Player one deck length" + playerOne.getDeck().size());
             System.out.println("Player two deck length" + playerTwo.getDeck().size());
         }
+
         //sets the winning player
-        Player winner = playerOne.getDeck().size() == 0 ? playerTwo : playerOne;
+        Player winner = playerOne.getDeck().size() > playerTwo.getDeck().size() ? playerOne : playerTwo;
+
         //adds to the winners lifetime wins and updates the database
         winner.addWin();
         playerRepository.save(winner);
-        System.out.println(winner.getPlayerId() + " is the winner!");
+
         return winner;
     }
 
