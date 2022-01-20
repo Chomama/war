@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -21,12 +23,8 @@ public class WarController{
 
     @GetMapping(value = "/start")
     public @ResponseBody String startGame() throws Exception {
-        List<Player> playerList = repository.findAll();
-        Player playerOne = playerList.get(0);
-        Player playerTwo = playerList.get(1);
-        Player winner = warGame.startGame(playerOne, playerTwo);
-        repository.save(winner);
-        return "Game has started and is running!";
+        Player winner = warGame.startGame();
+        return String.format("Game has finished and the winner is %s!", winner.getPlayerId());
     }
 
     @GetMapping(value = "/getPlayer")
@@ -38,6 +36,16 @@ public class WarController{
     public @ResponseBody int getPlayerWins(String playerId) {
         Player player =  repository.findByPlayerId(playerId);
         return player.getWins();
+    }
+
+    @GetMapping(value = "/getAllPlayersWins")
+    public @ResponseBody Map<String, Integer> getAllPlayersWins() {
+        List<Player> players = repository.findAll();
+        Map<String, Integer> playerWins = new HashMap<>();
+        players.stream().forEach(p -> {
+            playerWins.put(p.getPlayerId(), p.getWins());
+        });
+        return playerWins;
     }
 
 

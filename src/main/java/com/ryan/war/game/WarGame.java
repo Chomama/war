@@ -17,19 +17,25 @@ import java.util.*;
 @Component
 public class WarGame {
     @Autowired
-    private PlayerRepository repository;
+    private PlayerRepository playerRepository;
 
-    //starts the game
-    public Player startGame(Player playerOne, Player playerTwo) throws Exception {
-        //creates a dealer which creates a deck
+
+    public Player startGame() throws Exception {
+        //creates a dealer and populates the deck
         Dealer dealer = new Dealer();
 
-        //shuffles the deck and deals them out to the two players
+        //shuffles the deck
         dealer.shuffle();
+
+        //Gets Player One and Player Two from the database
+        Player playerOne = playerRepository.findByPlayerId("playerOne");
+        Player playerTwo = playerRepository.findByPlayerId("playerTwo");
+
+        //deals the shuffled cards to the players
         dealer.dealCards(playerOne, playerTwo);
 
         //calls the recursive function playRound until one of the
-        //players run out of cards or the function returns false
+        //players runs out of cards or the function returns false
         while(playRound(playerOne, playerTwo, null)) {
             if (playerOne.getDeck().size() == 0 || playerTwo.getDeck().size() == 0) {
                 break;
@@ -39,7 +45,9 @@ public class WarGame {
         }
         //sets the winning player
         Player winner = playerOne.getDeck().size() == 0 ? playerTwo : playerOne;
+        //adds to the winners lifetime wins and updates the database
         winner.addWin();
+        playerRepository.save(winner);
         System.out.println(winner.getPlayerId() + " is the winner!");
         return winner;
     }
@@ -70,7 +78,7 @@ public class WarGame {
             //tie -> initiate war
             case 0:
                 System.out.println("WAR");
-                //each player draws another card facedown
+                //each player draws a facedown card
                 Card playerOneFaceDown = playerOne.drawCard();
                 Card playerTwoFaceDown = playerTwo.drawCard();
 
@@ -81,16 +89,15 @@ public class WarGame {
                 //adds the face down cards to the played cards
                 playedCards.add(playerOneFaceDown);
                 playedCards.add(playerTwoFaceDown);
-                //calls itself recursively to play another round with already played cards
                 return playRound(playerOne, playerTwo, playedCards);
 
-            //player one wins the round
+            //player one wins the round and gains the cards
             case 1:
                 System.out.println("PLAYER ONE WINS ROUND.");
                 playerOne.addCards(playedCards);
                 break;
 
-            //player two wins the round
+            //player two wins the round and gains the cards
             case -1:
                 System.out.println("PLAYER TWO WINS ROUND.");
                 playerTwo.addCards(playedCards);

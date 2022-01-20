@@ -48,10 +48,7 @@ public class ApiTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void start() {
 
-    }
 
 
 
